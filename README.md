@@ -195,7 +195,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@divarvian](https://twitter.com/divarvian) - divarvian@gmail.com
+Diva Arviansyah - [@divarvian](https://twitter.com/divarvian) - divarvian@gmail.com
 
 Project Link: [https://github.com/divarvian/divarvian.github.io](https://github.com/divarvian/divarvian.github.io)
 
