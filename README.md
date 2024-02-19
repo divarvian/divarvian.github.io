@@ -83,6 +83,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+[![QuickCount][QuickCount-shield]][quickcount-url]
+
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `divarvian`, `divarvian.github.io`, `divarvian`, `divarvian`, `gmail`, `divarvian`, `project_title`, `project_description`
@@ -244,4 +246,6 @@ Project Link: [https://github.com/divarvian/divarvian.github.io](https://github.
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+[JQuery-url]: https://jquery.com
+[QuickCount-shield]: https://img.shields.io/badge/-Quick_Count-black.svg?style=for-the-badge&logo=github&colorB=555
+[quickcount-url]: https://github.com/divarvian/quickcount-kpu
