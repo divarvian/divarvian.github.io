@@ -26,6 +26,21 @@
       body {
         font-family: 'Sora', sans-serif;
       }
+      .animated {
+        animation-name: slideDown;
+        animation-duration: 1s;
+        animation-timing-function: ease;
+      }
+      @keyframes slideDown {
+        from {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
     </style>
     <script type="application/ld+json">
       {
@@ -39,7 +54,7 @@
     </script>
   </head>
   <body class="bg-white">
-    <div class="max-w-screen-md mx-auto px-4">
+    <div class="max-w-screen-md mx-auto px-4 animated">
       <header class="text-center">
         <img id="profile-pic" src="https://avatars.githubusercontent.com/u/100776524" alt="Diva Arviansyah - Profile Picture" class="border border-gray-300 rounded-full w-32 h-32 mt-8 mx-auto p-1" onclick="window.location.href='https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MDAxNDUyNDQ2NDE2OTEy?story_media_id=3315572796145196087&igsh=bTd2ZHlmaXpjdG14'">
         <h1 id="name" class="font-bold text-xl mt-4 flex items-center justify-center"> Diva Arviansyah <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 256 256" class="ml-2">
