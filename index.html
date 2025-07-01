@@ -555,33 +555,38 @@
                 const featuredProjectText = document.getElementById('proyek-unggulan').innerText;
                 const otherProjects = Array.from(document.querySelectorAll('#proyek-container .animated-card')).map(card => card.innerText).join('\n');
                 
-                // PERUBAHAN: Menambahkan instruksi untuk menggunakan emoji.
-                return `
-                    Anda adalah asisten AI yang ramah dan membantu untuk portofolio milik Diva Arviansyah.
-                    Gunakan informasi berikut untuk menjawab pertanyaan pengguna. Jawab dalam Bahasa Indonesia.
-                    Buat jawaban tetap singkat, informatif, dan profesional. Gunakan emoji yang relevan untuk membuat jawaban lebih ramah dan menarik.
-
-                    --- KONTEKS ---
-                    ${aboutText}
-                    \n\n
-                    ${skillsText}
-                    \n\n
-                    ${featuredProjectText}
-                    \n\n
-                    Proyek Lainnya:
-                    ${otherProjects}
-                    --- AKHIR KONTEKS ---
-                `;
+                // PERBAIKAN: Instruksi sistem yang lebih jelas untuk AI.
+                return `Anda adalah asisten AI yang ramah dan sangat membantu untuk portofolio milik Diva Arviansyah. Tugas utama Anda adalah menjawab pertanyaan pengguna HANYA berdasarkan informasi yang ada di portofolio ini. Jawablah dalam Bahasa Indonesia. Buat jawaban tetap singkat, informatif, dan profesional. Selalu gunakan emoji yang relevan (misalnya 💻 untuk proyek, 🎓 untuk pendidikan) untuk membuat jawaban lebih menarik.
+                
+                --- DATA PORTOFOLIO (SUMBER PENGETAHUAN ANDA) ---
+                
+                # Tentang Diva Arviansyah:
+                ${aboutText}
+                
+                # Keahlian & Teknologi:
+                ${skillsText}
+                
+                # Proyek Unggulan:
+                ${featuredProjectText}
+                
+                # Proyek Lainnya:
+                ${otherProjects}
+                
+                --- AKHIR DATA PORTOFOLIO ---
+                
+                Sekarang, jawab pertanyaan pengguna berdasarkan data di atas.`;
             };
 
             const addMessageToChat = (message, sender) => {
                 const messageElement = document.createElement('div');
+                const sanitizedMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
                 if (sender === 'user') {
                     messageElement.innerHTML = `
                         <div class="flex items-start gap-2.5 justify-end">
                             <div class="flex flex-col gap-1 w-full max-w-[320px]">
                                 <div class="chat-bubble-user p-3 rounded-s-xl rounded-ee-xl">
-                                    <p class="text-sm font-normal">${message}</p>
+                                    <p class="text-sm font-normal">${sanitizedMessage}</p>
                                 </div>
                             </div>
                              <div class="w-8 h-8 rounded-full bg-slate-700 text-white flex items-center justify-center flex-shrink-0">
@@ -590,8 +595,8 @@
                         </div>
                     `;
                 } else {
-                    // PERUBAHAN: Teks tebal diubah menjadi span dengan warna tema
-                    const formattedMessage = message
+                    // PERBAIKAN: Mengubah **...** menjadi span berwarna dan memformat newline.
+                    const formattedMessage = sanitizedMessage
                         .replace(/\*\*(.*?)\*\*/g, '<span class="font-semibold text-indigo-600 dark:text-indigo-400">$1</span>')
                         .replace(/\n/g, '<br>');
 
@@ -623,14 +628,26 @@
                 submitButton.disabled = true;
                 typingIndicator.classList.remove('hidden');
                 
-                const context = getPortfolioContext();
-                const prompt = `${context}\n\nPertanyaan Pengguna: ${userInput}`;
+                // PERBAIKAN: Logika baru untuk mempertahankan konteks
+                const systemInstruction = {
+                    role: "user",
+                    parts: [{ text: getPortfolioContext() }]
+                };
+                
+                const modelGreeting = {
+                    role: "model",
+                    parts: [{ text: "Tentu, saya siap membantu. Silakan ajukan pertanyaan Anda." }]
+                };
 
-                // Menyimpan pertanyaan mentah dari pengguna ke riwayat
+                // Menambahkan pertanyaan pengguna saat ini ke riwayat
                 chatHistory.push({ role: "user", parts: [{ text: userInput }] });
+                
+                // Membuat payload dinamis yang selalu menyertakan instruksi sistem
+                const payload = {
+                    contents: [systemInstruction, modelGreeting, ...chatHistory]
+                };
 
                 try {
-                    const payload = { contents: chatHistory };
                     const apiUrl = 'https://divarvian.my.id/gemini-proxy.php';
                     
                     const response = await fetch(apiUrl, {
@@ -655,7 +672,7 @@
                     }
                     
                     addMessageToChat(rawAiResponse, 'ai');
-                    // Menyimpan respons mentah dari AI ke riwayat untuk konteks percakapan selanjutnya
+                    // Menambahkan respons AI ke riwayat untuk percakapan selanjutnya
                     chatHistory.push({ role: "model", parts: [{ text: rawAiResponse }] });
 
                 } catch (error) {
